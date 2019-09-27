@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="cover" id="topCover">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 id="appTitle">Leaderboard</h1>
+                    <h2 id="appSubtitle">Tasks Assessing Protein Embeddings</h2></div>
+            </div>
+        </div>
+    </div>
+    <nav class="ui container">
+    <div class="ui fluid six item secondary pointing menu">
+    <a class=" active  item" href="/leaderboard">OVERALL</a>
+    <a class=" item" href="/leaderboard/secondary_structure">SECONDARY STRUCTURE</a>
+    <a class=" item" href="/leaderboard/contact_prediction">CONTACT PREDICTION</a>
+    <a class=" item" href="/leaderboard/remote_homology">REMOTE HOMOLOGY</a>
+    <a class=" item" href="/leaderboard/fluorescence">FLUORESCENCE</a>
+    <a class=" item" href="/leaderboard/stability">STABILITY</a>
+    </div>
+    </nav>
+    <div class="cover" id="contentCover">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="infoCard">
+                        <div class="infoBody">
+                            <div class="infoHeadline">
+                                <h2>Leaderboard</h2></div>
+                            <p>Overall Performance on the TAPE Benchmark Tasks.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
