@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="/styles/layout.css">
     <link rel="stylesheet" href="/styles/index.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="javascripts/analytics.js"></script>
 </head>
 
 <body>
@@ -49,17 +48,17 @@
                     <h2 id="appSubtitle">Tasks Assessing Protein Embeddings</h2></div>
             </div>
         </div>
-    <div class="ui fluid six item secondary pointing menu">
+    </div>
     <nav class="ui container">
+    <div class="ui fluid six item secondary pointing menu">
     <a class=" active  item" href="/">OVERALL</a>
     <a class=" item" href="/visualize/">SECONDARY STRUCTURE</a>
     <a class=" item" href="/explore/">CONTACT PREDICTION</a>
     <a class=" item" href="/evaluate/">REMOTE HOMOLOGY</a>
     <a class=" item" href="/download/">FLUORESCENCE</a>
     <a class=" item" href="/submit/">STABILITY</a>
+    </div>
     </nav>
-    </div>
-    </div>
     <div class="cover" id="contentCover">
         <div class="container">
             <div class="row">
@@ -69,104 +68,6 @@
                             <div class="infoHeadline">
                                 <h2>Leaderboard</h2></div>
                             <p>Overall Performance on the TAPE Benchmark Tasks.</p>
-                            <div id="overall-table" style="display:none;">
-                                <table class="table performanceTable">
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Model</th>
-                                        <th>Secondary Structure</th>
-                                        <th>Contact Prediction</th>
-                                        <th>Remote Homology</th>
-                                        <th>Fluorescence</th>
-                                        <th>Stability</th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="date label label-default">Sep 25, 2019</span></td> <!-- date -->
-                                        <td style="word-break:break-word;">Alignment (TAPE benchmark)  <!-- model -->
-                                            <p class="institution"></p> <!-- institution -->
-                                        </td>
-                                        <td>0.80</td>  <!-- ss -->
-                                        <td>0.64</td>  <!-- cp -->
-                                        <td>0.09</td>  <!-- rh -->
-                                        <td>--</td>  <!-- fl -->
-                                        <td>--</td>  <!-- st -->
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="date label label-default">Sep 25, 2019</span></td> <!-- date -->
-                                        <td style="word-break:break-word;">One-Hot (TAPE benchmark)  <!-- model -->
-                                            <p class="institution"></p> <!-- institution -->
-                                        </td>
-                                        <td>0.69</td>  <!-- ss -->
-                                        <td>0.29</td>  <!-- cp -->
-                                        <td>0.09</td>  <!-- rh -->
-                                        <td>0.14</td>  <!-- fl -->
-                                        <td>0.19</td>  <!-- st -->
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="date label label-default">Sep 25, 2019</span></td> <!-- date -->
-                                        <td style="word-break:break-word;">Transformer (TAPE benchmark)  <!-- model -->
-                                            <p class="institution">UC Berkeley</p> <!-- institution -->
-                                        </td>
-                                        <td>0.73</td>  <!-- ss -->
-                                        <td>0.36</td>  <!-- cp -->
-                                        <td>0.21</td>  <!-- rh -->
-                                        <td>0.68</td>  <!-- fl -->
-                                        <td>0.73</td>  <!-- st -->
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="date label label-default">Sep 25, 2019</span></td> <!-- date -->
-                                        <td style="word-break:break-word;">LSTM (TAPE benchmark)  <!-- model -->
-                                            <p class="institution">UC Berkeley</p> <!-- institution -->
-                                        </td>
-                                        <td>0.75</td>  <!-- ss -->
-                                        <td>0.39</td>  <!-- cp -->
-                                        <td>0.26</td>  <!-- rh -->
-                                        <td>0.67</td>  <!-- fl -->
-                                        <td>0.69</td>  <!-- st -->
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="date label label-default">Sep 25, 2019</span></td> <!-- date -->
-                                        <td style="word-break:break-word;">ResNet (TAPE benchmark)  <!-- model -->
-                                            <p class="institution">UC Berkeley</p> <!-- institution -->
-                                        </td>
-                                        <td>0.75</td>  <!-- ss -->
-                                        <td>0.29</td>  <!-- cp -->
-                                        <td>0.17</td>  <!-- rh -->
-                                        <td>0.21</td>  <!-- fl -->
-                                        <td>0.73</td>  <!-- st -->
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="date label label-default">Sep 25, 2019</span></td> <!-- date -->
-                                        <td style="word-break:break-word;">Bepler (TAPE benchmark)  <!-- model -->
-                                            <p class="institution">MIT</p> <!-- institution -->
-                                        </td>
-                                        <td>0.73</td>  <!-- ss -->
-                                        <td>0.40</td>  <!-- cp -->
-                                        <td>0.17</td>  <!-- rh -->
-                                        <td>0.33</td>  <!-- fl -->
-                                        <td>0.64</td>  <!-- st -->
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="date label label-default">Sep 25, 2019</span></td> <!-- date -->
-                                        <td style="word-break:break-word;">UniRep (TAPE benchmark)  <!-- model -->
-                                            <p class="institution">MIT</p> <!-- institution -->
-                                        </td>
-                                        <td>0.73</td>  <!-- ss -->
-                                        <td>0.34</td>  <!-- cp -->
-                                        <td>0.23</td>  <!-- rh -->
-                                        <td>0.67</td>  <!-- fl -->
-                                        <td>0.73</td>  <!-- st -->
-                                    </tr>
-                                </table>
-                            </div>
-                            <button id="btnClick">Click me!</button>
                         </div>
                     </div>
                 </div>
@@ -185,7 +86,10 @@
         </div>
     </nav>
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
+    <script
+        src="https://code.jquery.com/jquery-1.9.1.min.js"
+        integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ="
+        crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="/js/show_table.js"></script>
 </body>
