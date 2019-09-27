@@ -1,5 +1,8 @@
 *.swp
 *.swo
+.mypy_cache/
+*.pyc
+__pycache__/*
 
 # Logs
 logs
