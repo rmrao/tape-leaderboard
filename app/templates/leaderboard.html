@@ -10,16 +10,16 @@
             </div>
         </div>
     </div>
-    <nav class="ui container">
-    <div class="ui fluid six item secondary pointing menu">
+    <div class="ui container">
+    <nav class="ui fluid six item secondary pointing menu">
     <a class=" active  item" href="/leaderboard">OVERALL</a>
     <a class=" item" href="/leaderboard/secondary_structure">SECONDARY STRUCTURE</a>
     <a class=" item" href="/leaderboard/contact_prediction">CONTACT PREDICTION</a>
     <a class=" item" href="/leaderboard/remote_homology">REMOTE HOMOLOGY</a>
     <a class=" item" href="/leaderboard/fluorescence">FLUORESCENCE</a>
     <a class=" item" href="/leaderboard/stability">STABILITY</a>
-    </div>
     </nav>
+    </div>
     <div class="cover" id="contentCover">
         <div class="container">
             <div class="row">
@@ -28,7 +28,27 @@
                         <div class="infoBody">
                             <div class="infoHeadline">
                                 <h2>Leaderboard</h2></div>
-                            <p>Overall Performance on the TAPE Benchmark Tasks.</p>
+                            <p> {{ table.description }} </p>
+                            <table class="table performanceTable">
+                                <tr>
+                                    {% for fieldname in table.public_fields %}
+                                    <th>{{ fieldname }}</th>
+                                    {% endfor %}
+                                </tr>
+                                {% for model in table.models %}
+                                <tr>
+                                    {% for fieldname in table.fieldnames %}
+                                    {% if fieldname == 'date' %}
+                                    <td><span class="date label label-default">{{ model[fieldname] }}</span></td> <!-- date -->
+                                    {% elif fieldname == 'model' %}
+                                    <td style="word-break:break-word;">{{ model[fieldname] }}</td>  <!-- model -->
+                                    {% else %}
+                                    <td>{{ model[fieldname] }}</td>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </table>
                         </div>
                     </div>
                 </div>
