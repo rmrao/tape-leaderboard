@@ -12,12 +12,12 @@
     </div>
     <div class="ui container">
     <nav class="ui fluid six item secondary pointing menu">
-    <a class=" active  item" href="/leaderboard">OVERALL</a>
-    <a class=" item" href="/leaderboard/secondary_structure">SECONDARY STRUCTURE</a>
-    <a class=" item" href="/leaderboard/contact_prediction">CONTACT PREDICTION</a>
-    <a class=" item" href="/leaderboard/remote_homology">REMOTE HOMOLOGY</a>
-    <a class=" item" href="/leaderboard/fluorescence">FLUORESCENCE</a>
-    <a class=" item" href="/leaderboard/stability">STABILITY</a>
+    <a class=" {% if url_for(request.endpoint).endswith('leaderboard') %}active{% endif %} item" href="/leaderboard">OVERALL</a>
+    <a class=" {% if url_for(request.endpoint).endswith('leaderboard/secondary_structure') %}active{% endif %} item" href="/leaderboard/secondary_structure">SECONDARY STRUCTURE</a>
+    <a class=" {% if url_for(request.endpoint).endswith('leaderboard/contact_prediction') %}active{% endif %} item" href="/leaderboard/contact_prediction">CONTACT PREDICTION</a>
+    <a class=" {% if url_for(request.endpoint).endswith('leaderboard/remote_homology') %}active{% endif %} item" href="/leaderboard/remote_homology">REMOTE HOMOLOGY</a>
+    <a class=" {% if url_for(request.endpoint).endswith('leaderboard/fluorescence') %}active{% endif %} item" href="/leaderboard/fluorescence">FLUORESCENCE</a>
+    <a class=" {% if url_for(request.endpoint).endswith('leaderboard/stability') %}active{% endif %} item" href="/leaderboard/stability">STABILITY</a>
     </nav>
     </div>
     <div class="cover" id="contentCover">
