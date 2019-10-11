@@ -18,24 +18,25 @@ with (data_dir / 'results.csv').open() as f:
     model_info = [dict(zip(fieldnames, info_line)) for info_line in reader]  # type: ignore
 
 
+@app.route('/about')
+def about():
+    return render_template('about.html', title='Tasks Assessing Protein Embeddings - TAPE')
+
+
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Tasks Assessing Protein Embeddings - TAPE')
-
-
-@app.route('/leaderboard')
-def leaderboard():
     leaderboard_fields = ['date', 'model', 'secondary_structure', 'contact_prediction',
                           'remote_homology', 'fluorescence', 'stability']
     table = Table(leaderboard_fields,
                   [public_names[fn] for fn in leaderboard_fields],
                   "Overall Results on TAPE Benchmark Tasks.",
                   model_info)
-    return render_template('leaderboard.html', title='Leaderboard - TAPE', table=table)
+    return render_template('index.html', title='Leaderboard - TAPE', table=table,
+                           active_table='overall')
 
 
-@app.route('/leaderboard/secondary_structure')
+@app.route('/secondary_structure')
 def secondary_structure():
     leaderboard_fields = ['date', 'model', 'ss_cb513_3', 'ss_casp12_3', 'ss_ts115_3',
                           'ss_cb513_8', 'ss_casp12_8', 'ss_ts115_8']
@@ -44,10 +45,11 @@ def secondary_structure():
                   "Secondary structure results for the CB513, CASP12, and TS115 datasets. "
                   "Both 3-class and 8-class prediction results are reported",
                   model_info)
-    return render_template('leaderboard.html', title='Secondary Structure - TAPE', table=table)
+    return render_template('index.html', title='Secondary Structure - TAPE', table=table,
+                           active_table='secondary_structure')
 
 
-@app.route('/leaderboard/contact_prediction')
+@app.route('/contact_prediction')
 def contact_prediction():
     leaderboard_fields = [
         'date', 'model',
@@ -59,10 +61,11 @@ def contact_prediction():
                   "Contact prediction results on the CASP 12 dataset. Results are reported for "
                   "short (6-11), medium (12-23), and long (24+) range contacts.",
                   model_info)
-    return render_template('leaderboard.html', title='Contact Prediction - TAPE', table=table)
+    return render_template('index.html', title='Contact Prediction - TAPE', table=table,
+                           active_table='contact_prediction')
 
 
-@app.route('/leaderboard/remote_homology')
+@app.route('/remote_homology')
 def remote_homology():
     leaderboard_fields = [
         'date', 'model',
@@ -75,10 +78,11 @@ def remote_homology():
                   "for increasing levels of evolutionary similarity, which is reflected in "
                   "the higher performance on the Superfamily and Family-level sets.",
                   model_info)
-    return render_template('leaderboard.html', title='Remote Homology - TAPE', table=table)
+    return render_template('index.html', title='Remote Homology - TAPE', table=table,
+                           active_table='remote_homology')
 
 
-@app.route('/leaderboard/fluorescence')
+@app.route('/fluorescence')
 def fluorescence():
     leaderboard_fields = [
         'date', 'model',
@@ -90,10 +94,11 @@ def fluorescence():
                   " are shown for full dataset, as well as for within the two modes "
                   "(Bright and Dark).",
                   model_info)
-    return render_template('leaderboard.html', title='Fluorescence - TAPE', table=table)
+    return render_template('index.html', title='Fluorescence - TAPE', table=table,
+                           active_table='fluorescence')
 
 
-@app.route('/leaderboard/stability')
+@app.route('/stability')
 def stability():
     leaderboard_fields = [
         'date', 'model',
@@ -105,4 +110,5 @@ def stability():
                   "Stability prediction results for a variety of proteins. Results are shown"
                   " for the full dataset, as well as for subsets with specific folds.",
                   model_info)
-    return render_template('leaderboard.html', title='Stability - TAPE', table=table)
+    return render_template('index.html', title='Stability - TAPE', table=table,
+                           active_table='stability')
