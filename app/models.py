@@ -67,3 +67,6 @@ class DisplayName(db.Model):
 
     def __repr__(self) -> str:
         return f'<Maps {self.key_name} => {self.display_name}>'
+
+    def get_display_name(self, key_name: str) -> str:
+        pass

@@ -5,6 +5,26 @@ import csv
 from pathlib import Path
 from collections import namedtuple
 
+from app.models import LeaderboardEntry, DisplayName
+
+
+class LeaderboardTable:
+
+    def __init__(self, name: str, fieldnames: List[str]):
+        # Other metadata: pretrained, neural, institution, citation
+        metadata_names = ['submission_date', 'name']
+
+        self.fieldnames = metadata_names + fieldnames
+
+    @property
+    def headers(self) -> List[str]:
+        pass
+
+
+
+overall_table = LeaderboardTable(
+    'Overall Results',
+    ['ss_cb513_3', 'cp_medium_long_pl5', 'rh_fold_1', 'fl_rho_full', 'st_rho'])
 
 Table = namedtuple('Table',
                    ['fieldnames', 'public_fields', 'description', 'models'])
