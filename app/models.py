@@ -62,11 +62,11 @@ class LeaderboardEntry(db.Model):
 
 class DisplayName(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    key_name = db.Column(db.String(256))
-    display_name = db.Column(db.String(256))
+    key_name = db.Column(db.String(256), index=True, unique=True)
+    display_name = db.Column(db.String(256), index=True)
 
     def __repr__(self) -> str:
         return f'<Maps {self.key_name} => {self.display_name}>'
-
-    def get_display_name(self, key_name: str) -> str:
-        pass
+#
+    # def get_display_name(self, key_name: str) -> str:
+        # DisplayName.query.filter
