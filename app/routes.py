@@ -36,8 +36,7 @@ class LeaderboardTable:
     @property
     def entries(self) -> List[Dict[str, Any]]:
         entries = LeaderboardEntry.query.all()
-        entry_info = [{field: getattr(entry, field) for field in self.fieldnames}
-                      for entry in entries]
+        entry_info = [entry.get_values(self._fieldnames) for entry in entries]
         return entry_info
 
 

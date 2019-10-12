@@ -27,25 +27,29 @@
                     <div class="infoCard">
                         <div class="infoBody">
                             <p> {{ table.description }} </p>
-                            <table class="table performanceTable">
+                            <table id="tapeLeaderboardTable" class="table performanceTable" width="100%">
+                                <thead>
                                 <tr>
                                     {% for header in table.headers%}
-                                    <th>{{ header }}</th>
+                                    <th class="th-sm">{{ header }}</th>
                                     {% endfor %}
                                 </tr>
+                                </thead>
+                                <tbody>
                                 {% for entry in table.entries %}
                                 <tr>
                                     {% for header, value in entry.items() %}
                                     {% if header == 'submission_date' %}
                                     <td><span class="date label label-default">{{ value }}</span></td> <!-- date -->
-                                    {% elif fieldname == 'name' %}
-                                    <td style="word-break:break-word;">{{ model[fieldname] }}</td>  <!-- model -->
+                                    {% elif header == 'name' %}
+                                    <td style="word-break:break-word;">{{ value }}</td>  <!-- model -->
                                     {% else %}
-                                    <td>{{ model[fieldname] }}</td>
+                                    <td>{{ value }}</td>
                                     {% endif %}
                                     {% endfor %}
                                 </tr>
                                 {% endfor %}
+                                </tbody>
                             </table>
                         </div>
                     </div>

@@ -1,3 +1,4 @@
+import typing
 from app import db
 
 class LeaderboardEntry(db.Model):
@@ -58,6 +59,15 @@ class LeaderboardEntry(db.Model):
 
     def __repr__(self) -> str:
         return f'<Entry for model {self.name}>'
+
+    def _get_value(self, fieldname: str) -> typing.Any:
+        value = self.__dict__[fieldname]
+        if value in (float('-inf'), float('nan'), float('inf')):
+            return '--'
+        return value
+
+    def get_values(self, fieldnames: typing.Sequence[str]) -> typing.Dict[str, typing.Any]:
+        return {fn: self._get_value(fn) for fn in fieldnames}
 
 
 class DisplayName(db.Model):
