@@ -1,41 +1,76 @@
-from typing import List, Dict
+from typing import List, Dict, Any
 from flask import render_template
 from app import app
-import csv
-from pathlib import Path
-from collections import namedtuple
-
 from app.models import LeaderboardEntry, DisplayName
 
 
 class LeaderboardTable:
 
-    def __init__(self, name: str, fieldnames: List[str]):
+    def __init__(self, name: str, title: str, fieldnames: List[str]):
         # Other metadata: pretrained, neural, institution, citation
         metadata_names = ['submission_date', 'name']
+        self._name = name
+        self._title = title
+        self._fieldnames = metadata_names + fieldnames
 
-        self.fieldnames = metadata_names + fieldnames
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def title(self) -> str:
+        return self._title
+
+    @property
+    def description(self) -> str:
+        return ''
+
+    @property
+    def fieldnames(self) -> List[str]:
+        return self._fieldnames
 
     @property
     def headers(self) -> List[str]:
-        pass
+        return [DisplayName.get_by_key_name(key_name) for key_name in self._fieldnames]
 
+    @property
+    def entries(self) -> List[Dict[str, Any]]:
+        entries = LeaderboardEntry.query.all()
+        entry_info = [{field: getattr(entry, field) for field in self.fieldnames}
+                      for entry in entries]
+        return entry_info
 
 
 overall_table = LeaderboardTable(
-    'Overall Results',
+    'overall',
+    'Leaderboard - TAPE',
     ['ss_cb513_3', 'cp_medium_long_pl5', 'rh_fold_1', 'fl_rho_full', 'st_rho'])
 
-Table = namedtuple('Table',
-                   ['fieldnames', 'public_fields', 'description', 'models'])
+secondary_structure_table = LeaderboardTable(
+    'secondary_structure', 'Secondary Structure - TAPE',
+    ['ss_cb513_3', 'ss_casp12_3', 'ss_ts115_3', 'ss_cb513_8', 'ss_casp12_8', 'ss_ts115_8'])
 
-data_dir = Path(__file__).parent / 'data'
+contact_prediction_table = LeaderboardTable(
+    'contact_prediction', 'Contact Prediction - TAPE',
+    ['cp_short_range_auprc', 'cp_short_range_pl', 'cp_short_range_pl2', 'cp_short_range_pl5',
+     'cp_medium_range_auprc', 'cp_medium_range_pl', 'cp_medium_range_pl2',
+     'cp_medium_range_pl5', 'cp_long_range_auprc', 'cp_long_range_pl', 'cp_long_range_pl2',
+     'cp_long_range_pl5'])
 
-with (data_dir / 'results.csv').open() as f:
-    reader = csv.reader(f)
-    fieldnames: List[str] = next(reader)
-    public_names: Dict[str, str] = dict(zip(fieldnames, next(reader)))
-    model_info = [dict(zip(fieldnames, info_line)) for info_line in reader]  # type: ignore
+remote_homology_table = LeaderboardTable(
+    'remote_homology', 'Remote Homology - TAPE',
+    ['rh_fold_1', 'rh_fold_5', 'rh_superfamily_1', 'rh_superfamily_5', 'rh_family_1',
+     'rh_family_5'])
+
+fluorescence_table = LeaderboardTable(
+    'fluorescence', 'Fluorescence - TAPE',
+    ['fl_mse_full', 'fl_rho_full', 'fl_mse_bright', 'fl_rho_bright',
+     'fl_mse_dark', 'fl_rho_dark'])
+
+stability_table = LeaderboardTable(
+    'stability', 'Stability - TAPE',
+    ['st_rho', 'st_acc', 'st_aaa_rho', 'st_aaa_acc', 'st_abba_rho', 'st_abba_acc',
+     'st_babb_rho', 'st_babb_acc', 'st_bbabb_rho', 'st_bbabb_acc'])
 
 
 @app.route('/about')
@@ -46,89 +81,33 @@ def about():
 @app.route('/')
 @app.route('/index')
 def index():
-    leaderboard_fields = ['date', 'model', 'secondary_structure', 'contact_prediction',
-                          'remote_homology', 'fluorescence', 'stability']
-    table = Table(leaderboard_fields,
-                  [public_names[fn] for fn in leaderboard_fields],
-                  "Overall Results on TAPE Benchmark Tasks.",
-                  model_info)
-    return render_template('index.html', title='Leaderboard - TAPE', table=table,
-                           active_table='overall')
+    return render_template('index.html', title=overall_table.title, table=overall_table)
 
 
 @app.route('/secondary_structure')
 def secondary_structure():
-    leaderboard_fields = ['date', 'model', 'ss_cb513_3', 'ss_casp12_3', 'ss_ts115_3',
-                          'ss_cb513_8', 'ss_casp12_8', 'ss_ts115_8']
-    table = Table(leaderboard_fields,
-                  [public_names[fn] for fn in leaderboard_fields],
-                  "Secondary structure results for the CB513, CASP12, and TS115 datasets. "
-                  "Both 3-class and 8-class prediction results are reported",
-                  model_info)
-    return render_template('index.html', title='Secondary Structure - TAPE', table=table,
-                           active_table='secondary_structure')
+    return render_template(
+        'index.html', title=secondary_structure_table.title, table=secondary_structure_table)
 
 
 @app.route('/contact_prediction')
 def contact_prediction():
-    leaderboard_fields = [
-        'date', 'model',
-        'cp_short_range_auprc', 'cp_short_range_pl', 'cp_short_range_pl2', 'cp_short_range_pl5',
-        'cp_medium_range_auprc', 'cp_medium_range_pl', 'cp_medium_range_pl2', 'cp_medium_range_pl5',  # noqa E501
-        'cp_long_range_auprc', 'cp_long_range_pl', 'cp_long_range_pl2', 'cp_long_range_pl5']
-    table = Table(leaderboard_fields,
-                  [public_names[fn] for fn in leaderboard_fields],
-                  "Contact prediction results on the CASP 12 dataset. Results are reported for "
-                  "short (6-11), medium (12-23), and long (24+) range contacts.",
-                  model_info)
-    return render_template('index.html', title='Contact Prediction - TAPE', table=table,
-                           active_table='contact_prediction')
+    return render_template(
+        'index.html', title=contact_prediction_table.title, table=contact_prediction_table)
 
 
 @app.route('/remote_homology')
 def remote_homology():
-    leaderboard_fields = [
-        'date', 'model',
-        'rh_fold_1', 'rh_fold_5', 'rh_superfamily_1',
-        'rh_superfamily_5', 'rh_family_1', 'rh_family_5']
-    table = Table(leaderboard_fields,
-                  [public_names[fn] for fn in leaderboard_fields],
-                  "Remote homology prediction results. Results are reported for Fold-level, "
-                  "Superfamily-level, and Family-level holdout sets. Each holdout set allows "
-                  "for increasing levels of evolutionary similarity, which is reflected in "
-                  "the higher performance on the Superfamily and Family-level sets.",
-                  model_info)
-    return render_template('index.html', title='Remote Homology - TAPE', table=table,
-                           active_table='remote_homology')
+    return render_template(
+        'index.html', title=remote_homology_table.title, table=remote_homology_table)
 
 
 @app.route('/fluorescence')
 def fluorescence():
-    leaderboard_fields = [
-        'date', 'model',
-        'fl_mse_full', 'fl_rho_full', 'fl_mse_bright', 'fl_rho_bright',
-        'fl_mse_dark', 'fl_rho_dark']
-    table = Table(leaderboard_fields,
-                  [public_names[fn] for fn in leaderboard_fields],
-                  "Fluoresence prediction results for proteins around the GFP protein. Results"
-                  " are shown for full dataset, as well as for within the two modes "
-                  "(Bright and Dark).",
-                  model_info)
-    return render_template('index.html', title='Fluorescence - TAPE', table=table,
-                           active_table='fluorescence')
+    return render_template(
+        'index.html', title=fluorescence_table.title, table=fluorescence_table)
 
 
 @app.route('/stability')
 def stability():
-    leaderboard_fields = [
-        'date', 'model',
-        'st_rho', 'st_acc', 'st_aaa_rho', 'st_aaa_acc',
-        'st_abba_rho', 'st_abba_acc', 'st_babb_rho', 'st_babb_acc',
-        'st_bbabb_rho', 'st_bbabb_acc']
-    table = Table(leaderboard_fields,
-                  [public_names[fn] for fn in leaderboard_fields],
-                  "Stability prediction results for a variety of proteins. Results are shown"
-                  " for the full dataset, as well as for subsets with specific folds.",
-                  model_info)
-    return render_template('index.html', title='Stability - TAPE', table=table,
-                           active_table='stability')
+    return render_template('index.html', title=stability_table.title, table=stability_table)

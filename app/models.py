@@ -67,6 +67,8 @@ class DisplayName(db.Model):
 
     def __repr__(self) -> str:
         return f'<Maps {self.key_name} => {self.display_name}>'
-#
-    # def get_display_name(self, key_name: str) -> str:
-        # DisplayName.query.filter
+
+    @classmethod
+    def get_by_key_name(cls, key_name: str) -> str:
+        results = cls.query.filter(cls.key_name == key_name).all()
+        return results[0].display_name

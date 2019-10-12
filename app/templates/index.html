@@ -12,12 +12,12 @@
     </div>
     <div class="ui container">
     <nav class="ui fluid six item secondary pointing menu">
-    <a class=" {% if active_table == 'overall' %}active{% endif %} item" href="/">OVERALL</a>
-    <a class=" {% if active_table == 'secondary_structure' %}active{% endif %} item" href="/secondary_structure">SECONDARY STRUCTURE</a>
-    <a class=" {% if active_table == 'contact_prediction' %}active{% endif %} item" href="/contact_prediction">CONTACT PREDICTION</a>
-    <a class=" {% if active_table == 'remote_homology' %}active{% endif %} item" href="/remote_homology">REMOTE HOMOLOGY</a>
-    <a class=" {% if active_table == 'fluorescence' %}active{% endif %} item" href="/fluorescence">FLUORESCENCE</a>
-    <a class=" {% if active_table == 'stability' %}active{% endif %} item" href="/stability">STABILITY</a>
+    <a class=" {% if table.name == 'overall' %}active{% endif %} item" href="/">OVERALL</a>
+    <a class=" {% if table.name == 'secondary_structure' %}active{% endif %} item" href="/secondary_structure">SECONDARY STRUCTURE</a>
+    <a class=" {% if table.name == 'contact_prediction' %}active{% endif %} item" href="/contact_prediction">CONTACT PREDICTION</a>
+    <a class=" {% if table.name == 'remote_homology' %}active{% endif %} item" href="/remote_homology">REMOTE HOMOLOGY</a>
+    <a class=" {% if table.name == 'fluorescence' %}active{% endif %} item" href="/fluorescence">FLUORESCENCE</a>
+    <a class=" {% if table.name == 'stability' %}active{% endif %} item" href="/stability">STABILITY</a>
     </nav>
     </div>
     <div class="cover" id="contentCover">
@@ -29,16 +29,16 @@
                             <p> {{ table.description }} </p>
                             <table class="table performanceTable">
                                 <tr>
-                                    {% for fieldname in table.public_fields %}
-                                    <th>{{ fieldname }}</th>
+                                    {% for header in table.headers%}
+                                    <th>{{ header }}</th>
                                     {% endfor %}
                                 </tr>
-                                {% for model in table.models %}
+                                {% for entry in table.entries %}
                                 <tr>
-                                    {% for fieldname in table.fieldnames %}
-                                    {% if fieldname == 'date' %}
-                                    <td><span class="date label label-default">{{ model[fieldname] }}</span></td> <!-- date -->
-                                    {% elif fieldname == 'model' %}
+                                    {% for header, value in entry.items() %}
+                                    {% if header == 'submission_date' %}
+                                    <td><span class="date label label-default">{{ value }}</span></td> <!-- date -->
+                                    {% elif fieldname == 'name' %}
                                     <td style="word-break:break-word;">{{ model[fieldname] }}</td>  <!-- model -->
                                     {% else %}
                                     <td>{{ model[fieldname] }}</td>
